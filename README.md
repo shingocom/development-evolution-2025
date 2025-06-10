@@ -178,11 +178,39 @@ git push origin main
 echo "- $(date +%H:%M): [ファイル名] 更新完了" >> _ai_workspace/context/current_session.md
 ```
 
+### **🧹 包括的メンテナンス** (2025-06-10更新)
+
+#### **日次クリーニング** (作業開始前必須)
+```bash
+# 手動チェック課題を全て自動化
+bash maintenance/scripts/comprehensive_cleanup.sh
+
+# 結果確認
+cat _project_management/status/comprehensive_cleanup_*.log | tail -20
+```
+
+#### **緊急問題対応パターン**
+```bash
+# 重複ファイル大量発生時
+find . -name "*mcp*" | grep -v "_core_config/mcp"  # 重複検出
+bash maintenance/scripts/comprehensive_cleanup.sh  # 自動解決
+
+# 散在ファイル整理
+ls -la *.{md,json,sh,py}  # 散在確認  
+bash maintenance/scripts/comprehensive_cleanup.sh  # 自動配置
+
+# 詳細ガイド参照
+cat maintenance/COMPREHENSIVE_CLEANUP_GUIDE.md
+```
+
 ### **🔄 作業パターン別フロー**
 
 #### **パターンA: 設定ファイル変更**
 ```bash
 # 例: MCP設定更新
+
+# 0. 事前クリーニング（重要）
+bash maintenance/scripts/comprehensive_cleanup.sh
 
 # 1. 現状確認
 cat ~/.cursor/mcp.json | jq .
