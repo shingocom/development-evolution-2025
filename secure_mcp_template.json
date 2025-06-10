@@ -1,0 +1,49 @@
+{
+  "mcpServers": {
+    "n8n-workflow-builder": {
+      "command": "npx",
+      "args": ["-y", "@kernel.salacoste/n8n-workflow-builder"],
+      "env": {
+        "N8N_HOST": "http://localhost:5678/api/v1/",
+        "N8N_API_KEY": "${N8N_API_KEY}",
+        "READ_ONLY": "false"
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {
+        "PUPPETEER_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/shingoyamaguchi02/Desktop",
+        "/Users/shingoyamaguchi02/Documents",
+        "/Users/shingoyamaguchi02/Downloads",
+        "/Users/shingoyamaguchi02/development",
+        "/Users/shingoyamaguchi02/Library/Mobile Documents/com~apple~CloudDocs"
+      ]
+    },
+    "airtable": {
+      "command": "npx",
+      "args": ["@felores/airtable-mcp-server"],
+      "env": {
+        "AIRTABLE_API_KEY": "${AIRTABLE_API_KEY}"
+      }
+    },
+    "notionApi": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ${NOTION_API_KEY}\", \"Notion-Version\": \"2022-06-28\" }"
+      }
+    }
+  }
+} 
