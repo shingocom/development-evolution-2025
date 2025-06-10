@@ -1,0 +1,1 @@
+{"rules":{"allowed_files":["README.md",".gitignore",".directory-rules.json"],"allowed_directories":["scripts","workspace","_ai_workspace","_core_config","_project_management","archive","maintenance","platform_specific","secure_backups"],"auto_move_target":"workspace/temp","monitoring_enabled":true}}
