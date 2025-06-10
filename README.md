@@ -1,52 +1,58 @@
-# 🤖 AI Agent開発環境 - 実践ガイド
+# 🚀 AI開発環境進化プロジェクト 2025
 
-**対象**: 新しいAI Agent・継続作業・引き継ぎ作業  
-**目的**: **即座に実践的な作業を開始**できる具体的手順書  
-**重要**: このREADMEを**最初に必ず読む**こと
+**プロジェクト**: AI Agent最適化環境を次世代開発プラットフォームに進化  
+**リポジトリ**: https://github.com/shingocom/development-evolution-2025  
+**ステータス**: Phase 1 完了 → Phase 2 開始準備  
+**最終更新**: 2025-06-10 16:00
 
 ---
 
-## 🚀 **10分でスタート：必須アクション**
+## ⚡ **10分でスタート：新規AI Agent向け**
 
-### **1. 最優先確認事項（2分）**
+### **1. 必須事前確認 (2分)**
 ```bash
-# 現在の位置確認
+# 現在の位置・状況確認
 pwd  # ~/Development にいることを確認
-
-# 重複ファイル緊急チェック
-ls -la *.{md,json,sh} 2>/dev/null | wc -l  # 0であることを確認
+git status  # Gitリポジトリの状況確認
+git log --oneline | head -3  # 最新のコミット履歴確認
 
 # セキュリティ状況確認
-ls -la ~/.env.secure  # ファイル存在確認
+ls -la ~/.env.secure  # セキュア環境変数ファイル確認
 ls -la ~/.cursor/mcp.json  # MCP設定確認
 ```
 
-### **2. プロジェクト状況把握（3分）**
+### **2. GitHub連携確認 (2分)**
 ```bash
-# 進捗確認
-cat AI_AGENT_OPTIMIZATION_PLAN.md | grep "進捗"
+# GitHub認証状況確認
+gh auth status
 
-# 現在のセッション情報確認
-cat _ai_workspace/context/current_session.md
+# リモートリポジトリ確認
+git remote -v
 
-# 重要ドキュメント確認
-ls -la QUICK_SETUP_REFERENCE.md CURRENT_STATE_INVENTORY.md
+# 最新状況取得
+git pull origin main
 ```
 
-### **3. 安全チェック（3分）**
+### **3. プロジェクト状況把握 (3分)**
 ```bash
-# 自動整理スクリプト実行
+# 現在のフェーズ確認
+cat DEVELOPMENT_EVOLUTION_PROJECT_2025.md | head -20
+
+# 進捗状況確認
+cat _project_management/status/overall_progress.md | tail -20
+
+# 現在のセッション情報
+cat _ai_workspace/context/current_session.md
+```
+
+### **4. 作業環境準備 (3分)**
+```bash
+# 自動クリーニング実行
 bash maintenance/scripts/auto_cleanup.sh
 
 # 構造検証
 bash maintenance/scripts/structure_validator.sh
 
-# APIキー暴露チェック
-grep -r "patn\|ntn_\|eyJhbGci\|sk-" . --exclude-dir=backup_* | head -3
-```
-
-### **4. 作業準備完了（2分）**
-```bash
 # セッション開始記録
 echo "## $(date +%Y-%m-%d\ %H:%M:%S) セッション開始" >> _ai_workspace/context/current_session.md
 echo "- AI Agent: [あなたのID]" >> _ai_workspace/context/current_session.md
@@ -55,235 +61,334 @@ echo "- 作業目標: [今回の目標]" >> _ai_workspace/context/current_sessio
 
 ---
 
-## 📋 **ファイル更新：具体的手順**
+## 📊 **現在のプロジェクト状況（2025-06-10）**
 
-### **🔧 手順1: ファイル編集時の必須プロセス**
+### **✅ Phase 1 完了済み: Git統合基盤構築**
+- **期間**: 2025-06-10 完了
+- **成果**: 100%達成
 
-#### **編集前チェック（必須）**
+#### **完了項目:**
+1. **Git統合基盤構築** ✅
+   - セキュリティ重視の包括的.gitignore作成
+   - Mac/Linux クロスプラットフォーム対応
+   - 4つの段階的コミット（意味のある履歴）
+   
+2. **GitHub統合** ✅
+   - SSH認証設定完了
+   - リポジトリ: https://github.com/shingocom/development-evolution-2025
+   - 83ファイル、112.39 KiB正常同期
+   - ブランチトラッキング設定済み
+   
+3. **セキュリティ対応** ✅
+   - API暴露問題解決
+   - 環境変数管理システム構築
+   - セキュア起動プロセス確立
+
+4. **運用システム** ✅
+   - 自動クリーニングシステム
+   - 構造検証システム
+   - セッション管理システム
+
+### **🔄 Phase 2: AI/ML本格導入（次のステップ）**
+- **予定期間**: 2025-06-10 開始
+- **目標**: Docker + AI統合環境
+
+#### **実行予定:**
+1. **Docker基盤構築**
+   - AI開発用コンテナ環境
+   - GPU対応設定
+   - 開発環境統一
+
+2. **Flux.1本格統合**
+   - Docker環境構築
+   - API化実装
+   - バッチ処理パイプライン
+
+3. **Ollama本格運用**
+   - マルチモデル管理
+   - LangChain統合
+   - 推論最適化
+
+---
+
+## 🔧 **運用ルール：日常作業フロー**
+
+### **📝 ファイル編集の必須プロセス**
+
+#### **1. 編集前チェック（必須）**
 ```bash
-# 1. 重複ファイル確認
-find ~/Development -name "*[ファイル名のキーワード]*" | head -5
+# 重複ファイル確認
+find ~/Development -name "*[ファイルキーワード]*" | head -5
 
-# 2. 既存ファイル確認
+# Git状況確認
+git status
+
+# 既存ファイル確認
 ls -la [対象ディレクトリ]/[ファイル名]
 
-# 3. バックアップ作成（重要ファイルの場合）
+# 重要ファイルのバックアップ（必要時）
 cp [ファイルパス] [ファイルパス].backup_$(date +%Y%m%d_%H%M%S)
 ```
 
-#### **編集実行**
+#### **2. 編集実行**
 ```bash
-# ツール使用例：
+# 推奨ツール使い分け:
 # - edit_file: 新規作成・大幅変更
 # - search_replace: 部分変更・既存ファイル修正
 # - read_file: 内容確認
 
-# 例：workflow_patterns.mdに新しいパターン追加
-read_file _ai_workspace/rules/workflow_patterns.md 200 250  # 現状確認
-search_replace _ai_workspace/rules/workflow_patterns.md "OLD_TEXT" "NEW_TEXT"
+# 例: 設定ファイル部分更新
+read_file _core_config/mcp/active_config.json 1 50  # 現状確認
+search_replace _core_config/mcp/active_config.json "OLD_VALUE" "NEW_VALUE"
 ```
 
-#### **編集後確認（必須）**
+#### **3. 編集後確認・コミット（必須）**
 ```bash
-# 1. ファイル内容確認
-cat [編集したファイル] | head -10 | tail -5
+# ファイル内容確認
+cat [編集したファイル] | head -10
 
-# 2. 権限確認（設定ファイルの場合）
-ls -la [編集したファイル]
+# Git変更確認
+git diff [編集したファイル]
 
-# 3. 構文チェック（JSON・bashの場合）
-python -m json.tool [ファイル.json] > /dev/null  # JSON
-bash -n [ファイル.sh]  # bash
+# ステージング・コミット
+git add [編集したファイル]
+git commit -m "📝 [変更内容の説明]"
+
+# GitHubプッシュ
+git push origin main
+
+# セッション記録
+echo "- $(date +%H:%M): [ファイル名] 更新完了" >> _ai_workspace/context/current_session.md
 ```
 
----
+### **🔄 作業パターン別フロー**
 
-## 🔄 **ワークフロー：具体的作業手順**
-
-### **パターンA: 設定ファイル変更**
+#### **パターンA: 設定ファイル変更**
 ```bash
-# 例：MCP設定更新
+# 例: MCP設定更新
 
-# 1. 事前確認
-cat _core_config/mcp/templates/secure_mcp_template.json
+# 1. 現状確認
+cat ~/.cursor/mcp.json | jq .
 
 # 2. 環境変数確認
 source ~/.env.secure
-echo $AIRTABLE_API_KEY | head -c 10  # 最初の10文字のみ表示
+echo "N8N_API_KEY前10文字: ${N8N_API_KEY:0:10}"
 
-# 3. 設定適用
-cp _core_config/mcp/templates/secure_mcp_template.json ~/.cursor/mcp.json
+# 3. テンプレート適用
+cp _core_config/mcp/templates/secure_template.json ~/.cursor/mcp.json
 
-# 4. 動作確認
-# Cursor内でAirtableベース一覧取得テスト実行
+# 4. 動作確認（MCPツール使用）
+# 例: Airtableベース一覧取得テスト
 
-# 5. 記録
-echo "- MCP設定更新完了: $(date)" >> _ai_workspace/context/current_session.md
+# 5. Git記録
+git add _core_config/mcp/
+git commit -m "🔧 MCP設定更新: $(date +%Y-%m-%d)"
+git push origin main
 ```
 
-### **パターンB: ドキュメント更新**
+#### **パターンB: プロジェクト文書更新**
 ```bash
-# 例：運用ルール追加
+# 例: 進捗報告・計画更新
 
 # 1. 対象ファイル特定
-find _ai_workspace/rules -name "*.md" | grep [キーワード]
+find _project_management -name "*.md" | grep progress
 
-# 2. 重複チェック
-grep -r "[追加したい内容のキーワード]" _ai_workspace/rules/
+# 2. 現状確認
+read_file _project_management/status/overall_progress.md 1 50
 
-# 3. 編集実行
-search_replace _ai_workspace/rules/[ファイル名].md "[既存テキスト]" "[新しいテキスト]"
+# 3. 更新実行
+search_replace _project_management/status/overall_progress.md "**進捗**: 75%" "**進捗**: 85%"
 
-# 4. 一貫性チェック
-grep -A 5 -B 5 "[変更した部分]" _ai_workspace/rules/[ファイル名].md
+# 4. 関連ファイル更新
+echo "- $(date): Phase 1 完了" >> _project_management/status/overall_progress.md
+
+# 5. Git管理
+git add _project_management/
+git commit -m "📊 進捗報告更新: Phase 1 完了記録"
+git push origin main
 ```
 
-### **パターンC: スクリプト実行**
+#### **パターンC: 新機能・スクリプト開発**
 ```bash
-# 例：自動化スクリプト実行
+# 例: 新しい自動化スクリプト作成
 
-# 1. 実行権限確認
-ls -la maintenance/scripts/auto_cleanup.sh
+# 1. 開発ブランチ作成
+git checkout -b feature/new-automation-script
 
-# 2. 安全実行
-cd ~/Development
-bash maintenance/scripts/auto_cleanup.sh
+# 2. スクリプト作成
+edit_file maintenance/scripts/new_feature.sh
 
-# 3. 結果確認
-ls -la _project_management/status/auto_cleanup_*.log | tail -1
-cat [最新ログファイル]
+# 3. 権限設定
+chmod +x maintenance/scripts/new_feature.sh
+
+# 4. テスト実行
+bash maintenance/scripts/new_feature.sh
+
+# 5. ドキュメント更新
+echo "## new_feature.sh" >> maintenance/scripts/README.md
+
+# 6. プルリクエスト準備
+git add maintenance/scripts/
+git commit -m "✨ 新機能追加: 自動化スクリプト new_feature.sh"
+git push origin feature/new-automation-script
+
+# 7. GitHub上でプルリクエスト作成
+gh pr create --title "✨ 新機能: 自動化スクリプト" --body "詳細説明..."
 ```
 
 ---
 
-## 🚨 **緊急時対応：具体的手順**
+## 🚨 **緊急時対応・トラブルシューティング**
 
-### **ファイル重複を発見した場合**
+### **Git関連問題**
 ```bash
-# 1. 即座に作業停止
-echo "STOP: 重複ファイル発見 - $(date)" >> emergency.log
+# コンフリクト発生時
+git status  # 問題ファイル確認
+git diff    # 差分確認
+# 手動でコンフリクト解決後
+git add .
+git commit -m "🔥 コンフリクト解決"
 
-# 2. 重複ファイル確認
-find ~/Development -name "*session*" -o -name "*config*" | sort
+# 間違ったコミットの修正
+git reset --soft HEAD~1  # 最新コミットを取り消し（変更は保持）
+git reset --hard HEAD~1  # 最新コミットを完全削除（注意）
 
-# 3. 安全バックアップ
-mkdir -p emergency_backup_$(date +%Y%m%d_%H%M%S)
-cp [重複ファイル群] emergency_backup_$(date +%Y%m%d_%H%M%S)/
-
-# 4. 専用スクリプト実行
-bash maintenance/scripts/auto_cleanup.sh
-
-# 5. 手動確認・統合
-# 各ファイルの内容を比較して適切に統合
+# プッシュ済みコミットの修正
+git revert [コミットハッシュ]  # 安全なリバート
 ```
 
-### **APIキー暴露を発見した場合**
+### **APIキー漏洩対応**
 ```bash
 # 1. 緊急停止
-echo "🚨 API KEY EXPOSURE DETECTED - $(date)" >> security_incident.log
+echo "🚨 API KEY EXPOSURE - $(date)" >> security_incident.log
 
-# 2. 暴露箇所特定
-grep -r "patn\|ntn_\|eyJhbGci\|sk-" . --exclude-dir=backup_* | tee exposure_report.txt
+# 2. 漏洩箇所確認
+grep -r "eyJhbGci\|patn_\|ntn_" . --exclude-dir=.git
 
-# 3. 即座削除・修正
-sed -i 's/patn_[a-zA-Z0-9]*/${AIRTABLE_API_KEY}/g' [対象ファイル]
+# 3. 緊急修正
+sed -i 's/eyJhbGci[a-zA-Z0-9]*/${SECURE_TOKEN}/g' [対象ファイル]
 
-# 4. API再生成（QUICK_SETUP_REFERENCE.md参照）
-cat QUICK_SETUP_REFERENCE.md | grep -A 10 "API再生成"
+# 4. API再生成
+# N8N: http://localhost:5678 → Settings → API Keys
+# Airtable: https://airtable.com/create/tokens
+
+# 5. 環境変数更新
+echo 'export NEW_API_KEY="新しいキー"' >> ~/.env.secure
+
+# 6. 緊急コミット
+git add .
+git commit -m "🚨 セキュリティ修正: APIキー環境変数化"
+git push origin main
 ```
 
----
-
-## 📊 **現在のプロジェクト状況**
-
-### **✅ 完了済み（75%）**
-- ディレクトリ構造構築
-- セキュリティ基盤整備（部分）
-- AI Workspace構築
-- 運用ルール策定
-- 自動化スクリプト作成
-
-### **🔄 進行中**
-- APIキー環境変数化（緊急）
-- Day 7最終検証
-
-### **⏳ 未着手**
-- 本格運用開始
-- プロジェクト統合
-
-### **🎯 即座にやるべきこと**
-1. **APIキー再生成**（セキュリティ強化）
-2. **MCP動作確認**
-3. **Day 7検証完了**
-
----
-
-## 💡 **新しいAI Agent向けガイド**
-
-### **初回作業時の必須ステップ**
-1. **このREADMEを最後まで読む**
-2. **`QUICK_SETUP_REFERENCE.md`を確認**
-3. **セキュリティ状況確認**
-4. **auto_cleanup.sh実行**
-5. **current_session.md更新**
-
-### **毎回の作業フロー**
-1. **重複チェック** → **作業** → **確認** → **記録**
-2. **編集前確認** → **編集実行** → **動作検証** → **ログ更新**
-
-### **判断に迷った時の対処**
-1. **一時停止**
-2. **`_ai_workspace/rules/communication.md`参照**
-3. **安全な方法を選択**
-4. **重複・散在を絶対に避ける**
-
----
-
-## 🔗 **重要ファイル早見表**
-
-| 目的 | ファイル | 用途 |
-|------|---------|------|
-| 全体理解 | `AI_AGENT_OPTIMIZATION_PLAN.md` | プロジェクト全体像 |
-| 現状把握 | `CURRENT_STATE_INVENTORY.md` | 現在の詳細状況 |
-| 緊急対応 | `QUICK_SETUP_REFERENCE.md` | 緊急時手順書 |
-| セキュリティ | `SECURITY_IMPROVEMENT_PLAN.md` | セキュリティ対応 |
-| 作業ルール | `_ai_workspace/rules/` | 日常作業ルール |
-| 実行手順 | `_ai_workspace/rules/workflow_patterns.md` | 具体的作業手順 |
-| コミュニケーション | `_ai_workspace/rules/communication.md` | 指示・対話方法 |
-
----
-
-## 📞 **困った時の対処法**
-
-### **作業に迷った場合**
+### **ファイル重複・散在対応**
 ```bash
-# 1. 状況整理
-echo "迷った内容: [詳細]" >> confusion_log.md
-echo "現在の状況: [状況]" >> confusion_log.md
+# 1. 重複検出
+find ~/Development -name "*config*" -o -name "*session*" | sort
 
-# 2. ルール確認
-grep -r "[関連キーワード]" _ai_workspace/rules/
+# 2. 安全バックアップ
+mkdir emergency_backup_$(date +%Y%m%d_%H%M%S)
+cp [重複ファイル群] emergency_backup_$(date +%Y%m%d_%H%M%S)/
 
-# 3. 類似事例確認  
-grep -r "[関連キーワード]" _ai_workspace/knowledge/solutions/
-```
-
-### **エラーが発生した場合**
-```bash
-# 1. エラー記録
-echo "ERROR: $(date) - [エラー内容]" >> error_log.md
-
-# 2. 現状バックアップ
-cp -r . backup_error_$(date +%Y%m%d_%H%M%S)/ 2>/dev/null
-
-# 3. 安全復旧
+# 3. 自動整理実行
 bash maintenance/scripts/auto_cleanup.sh
+
+# 4. 手動統合（必要時）
+# 各ファイル内容確認・適切に統合
+
+# 5. Git整理
+git add .
+git commit -m "🧹 ファイル重複解決・整理完了"
+git push origin main
 ```
 
 ---
 
-**🎯 最重要原則**: **迷ったら安全な方法を選ぶ・重複を絶対に作らない・必ず確認してから実行する**
+## 📋 **重要ファイル・ディレクトリ早見表**
 
-**📋 このREADMEの更新**: 新しい手順や解決策を発見したら、このREADMEに追記して共有する
+### **📁 プロジェクト管理**
+| ファイル | 用途 | 更新頻度 |
+|----------|------|----------|
+| `DEVELOPMENT_EVOLUTION_PROJECT_2025.md` | 全体計画 | 週次 |
+| `_project_management/status/overall_progress.md` | 進捗状況 | 日次 |
+| `_ai_workspace/context/current_session.md` | セッション記録 | 毎回 |
 
-**🎉 成功の定義**: 新しいAI AgentがこのREADMEだけで、迷わず安全に作業を開始・継続できる状態 
+### **⚙️ 設定・テンプレート**
+| ディレクトリ | 用途 | 管理方法 |
+|--------------|------|----------|
+| `_core_config/` | 核となる設定 | Git管理 |
+| `_ai_workspace/rules/` | 運用ルール | Git管理 |
+| `maintenance/scripts/` | 自動化スクリプト | Git管理 |
+
+### **🔒 セキュリティ**
+| ファイル | 場所 | Git管理 |
+|----------|------|---------|
+| `~/.env.secure` | ホーム | ❌除外 |
+| `~/.cursor/mcp.json` | MCP設定 | ❌除外 |
+| `.gitignore` | リポジトリ | ✅管理 |
+
+---
+
+## 🎯 **次のアクション：Phase 2開始**
+
+### **今すぐ実行可能**
+1. **Docker導入**: Mac用Docker Desktop インストール
+2. **AI開発コンテナ**: Python + PyTorch + CUDA環境
+3. **Flux.1統合**: Docker環境での動作確認
+
+### **今週の目標**
+- Docker基盤環境構築 80%
+- AI/MLコンテナ統合 60%
+- 次フェーズ計画策定 100%
+
+### **実行コマンド例**
+```bash
+# Docker導入開始
+brew install --cask docker
+
+# プロジェクト次フェーズ準備
+git checkout -b feature/phase2-docker-integration
+mkdir -p docker/ai-dev
+touch docker/docker-compose.yml
+```
+
+---
+
+## 💡 **AI Agent作業指針**
+
+### **基本原則**
+1. **Git First**: 全ての変更はGitで管理
+2. **Security First**: 機密情報は環境変数
+3. **Documentation First**: 変更は必ず記録
+4. **Test First**: 実行前に安全確認
+
+### **判断基準**
+- 迷ったら**安全な方法**を選択
+- 重複を**絶対に作らない**
+- 変更前に**必ず確認**
+- エラー時は**即座に記録**
+
+### **コミュニケーション**
+- 作業内容は具体的に記述
+- 問題発生時は詳細を報告
+- 成功・完了も必ず記録
+- 次の作業者への引き継ぎを明記
+
+---
+
+## 🔗 **外部リンク・参考資料**
+
+- **GitHub Repository**: https://github.com/shingocom/development-evolution-2025
+- **N8N管理画面**: http://localhost:5678
+- **Airtable**: https://airtable.com/create/tokens
+- **Docker Hub**: https://hub.docker.com
+
+---
+
+**🚀 プロジェクト成功の定義**: Phase 5完了時に、企業レベルのAI/ML開発環境が構築され、チーム開発・CI/CD・監視システムが完全稼働している状態
+
+**📞 サポート**: 各作業で詳細な実装プランを即座提供可能
+
+---
+
+*最終更新: 2025-06-10 16:00 | 次回更新予定: Phase 2進捗に応じて* 
