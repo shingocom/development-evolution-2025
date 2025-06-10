@@ -1,0 +1,256 @@
+# ================================
+# セキュリティ - 絶対に追跡しない
+# ================================
+
+# APIキー・認証情報
+*.env
+*.env.*
+.env.local
+.env.secure
+*.key
+*.pem
+*.p12
+*.crt
+*.csr
+*.der
+api_keys.txt
+credentials.json
+secrets.json
+config.json
+*secret*
+*password*
+*token*
+
+# SSH・認証
+.ssh/
+id_rsa*
+id_ed25519*
+known_hosts
+
+# AWS・クラウド認証
+.aws/
+.azure/
+.gcloud/
+*.credentials
+
+# ================================
+# OS固有ファイル - Mac/Linux対応
+# ================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.AppleDouble
+.LSOverride
+Icon?
+
+# Linux
+*~
+.nfs*
+.directory
+
+# Windows (将来対応)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ================================
+# 開発環境・言語固有
+# ================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+.pnp.*
+
+# Docker
+.docker/
+docker-compose.override.yml
+.dockerignore
+
+# ================================
+# IDEと開発ツール
+# ================================
+
+# VSCode / Cursor
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ================================
+# AI/ML開発固有
+# ================================
+
+# AIモデル・データセット
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.model
+*.ckpt
+*.pth
+*.pt
+*.pb
+*.onnx
+*.tflite
+models/
+checkpoints/
+datasets/
+data/
+*.npy
+*.npz
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# TensorBoard
+logs/
+tensorboard/
+
+# ================================
+# バックアップ・ログ・一時ファイル
+# ================================
+
+# バックアップファイル
+backup_*/
+*.backup
+*.bak
+*.tmp
+*.temp
+*_backup
+*_old
+
+# ログファイル
+*.log
+logs/
+log/
+*.out
+*.err
+
+# 一時ディレクトリ
+tmp/
+temp/
+.tmp/
+.temp/
+
+# ================================
+# プロジェクト固有
+# ================================
+
+# N8N関連
+.n8n/
+n8n_data/
+
+# MCP設定（機密情報含む可能性）
+mcp_connection_test_*.md
+
+# 実行時生成ファイル
+*.pid
+*.lock
+
+# ================================
+# 大容量ファイル・メディア
+# ================================
+
+# 画像・動画・音声（大容量）
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.webm
+*.mp3
+*.wav
+*.flac
+*.aac
+*.m4a
+
+# 圧縮ファイル（大容量）
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar.bz2
+*.tgz
+
+# ================================
+# 開発時のメモ・草稿
+# ================================
+
+# 個人メモ
+NOTES.md
+TODO.md
+DRAFT*.md
+*_draft.*
+*_temp.*
+
+# テスト・実験ファイル
+test_*.py
+test_*.js
+experiment_*
+temp_*
+debug_* 
