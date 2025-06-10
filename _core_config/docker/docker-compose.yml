@@ -1,0 +1,192 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # PostgreSQL データベース
+  # ==========================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ai_development
+      - POSTGRES_USER=ai_user
+      - POSTGRES_PASSWORD=ai-development-2025
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../../docker/sql:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  # ==========================================
+  # Redis キャッシュ・セッション管理
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+  # ==========================================
+  # Ollama LLM サービス
+  # ==========================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+
+  # ==========================================
+  # Jupyter Lab AI開発環境
+  # ==========================================
+  jupyter:
+    image: jupyter/tensorflow-notebook:latest
+    container_name: ai-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../../workspace/current:/home/jovyan/work
+      - ../../active_projects:/home/jovyan/projects
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=ai-development-2025
+    restart: unless-stopped
+
+  # ==========================================
+  # N8N ワークフロー自動化
+  # ==========================================
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: ai-n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=ai-development-2025
+    restart: unless-stopped
+
+  # ==========================================
+  # Kong Gateway (API統合管理)
+  # ==========================================
+  kong-database-migration:
+    image: kong/kong:latest
+    container_name: kong-migration
+    environment:
+      - KONG_DATABASE=postgres
+      - KONG_PG_HOST=postgres
+      - KONG_PG_PORT=5432
+      - KONG_PG_DATABASE=ai_development
+      - KONG_PG_USER=ai_user
+      - KONG_PG_PASSWORD=ai-development-2025
+    command: kong migrations bootstrap
+    depends_on:
+      - postgres
+    restart: "no"
+
+  kong:
+    image: kong/kong:latest
+    container_name: ai-kong
+    ports:
+      - "8080:8000"    # Kong Proxy
+      - "8001:8001"    # Kong Admin API
+      - "8444:8443"    # Kong Proxy SSL
+      - "8002:8002"    # Kong Manager
+    environment:
+      - KONG_DATABASE=postgres
+      - KONG_PG_HOST=postgres
+      - KONG_PG_PORT=5432
+      - KONG_PG_DATABASE=ai_development
+      - KONG_PG_USER=ai_user
+      - KONG_PG_PASSWORD=ai-development-2025
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+      - KONG_ADMIN_GUI_URL=http://localhost:8002
+      - KONG_PLUGINS=bundled,prometheus
+    depends_on:
+      - postgres
+      - kong-database-migration
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  # ==========================================
+  # API Gateway (existing - Kong経由でアクセス)
+  # ==========================================
+  api-gateway:
+    build:
+      context: ../../docker/api-gateway
+      dockerfile: Dockerfile
+    container_name: ai-api-gateway
+    ports:
+      - "8000:8000"    # 直接アクセス（段階的移行用）
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://ai_user:ai-development-2025@postgres:5432/ai_development
+      - OLLAMA_URL=http://ollama:11434
+    depends_on:
+      - redis
+      - postgres
+      - ollama
+    restart: unless-stopped
+
+  # ==========================================
+  # Grafana 監視ダッシュボード
+  # ==========================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ai-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=ai-development-2025
+    restart: unless-stopped
+
+  # ==========================================
+  # Prometheus 監視システム
+  # ==========================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ai-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../../docker/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  ollama_data:
+    driver: local
+  n8n_data:
+    driver: local
+  grafana_data:
+    driver: local
+  prometheus_data:
+    driver: local 

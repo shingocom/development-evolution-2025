@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # PostgreSQL データベース
+  # ==========================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=ai_development
+      - POSTGRES_USER=ai_user
+      - POSTGRES_PASSWORD=ai-development-2025
+    networks:
+      - ai-network
+    restart: unless-stopped
+
+  # ==========================================
+  # Redis キャッシュ・セッション管理
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ai-network
+    restart: unless-stopped
+
+  # ==========================================
+  # Ollama LLM サービス
+  # ==========================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ai-network
+    restart: unless-stopped
+
+  # ==========================================
+  # Jupyter Lab AI開発環境
+  # ==========================================
+  jupyter:
+    image: jupyter/tensorflow-notebook:latest
+    container_name: ai-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../workspace/current:/home/jovyan/work
+      - ../active_projects:/home/jovyan/projects
+      - ./shared:/home/jovyan/shared
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=ai-development-2025
+    networks:
+      - ai-network
+    restart: unless-stopped
+
+# ==========================================
+# Network Configuration
+# ==========================================
+networks:
+  ai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ==========================================
+# Volume Configuration
+# ==========================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  ollama_data:
+    driver: local 

@@ -68,11 +68,11 @@ except:
         
         echo -e "🔧 設定済みサーバー数: ${server_count}"
         
-        if [ "$server_count" -eq 4 ]; then
-            echo -e "${GREEN}✅ MCP サーバー数: 正常（4サーバー）${NC}"
+                  if [ "$server_count" -eq 3 ]; then
+                          echo -e "${GREEN}✅ MCP サーバー数: 正常（3サーバー）${NC}"
         else
-            echo -e "${RED}⚠️ 異常: MCP サーバー数が4と異なります${NC}"
-            echo "   期待値: 4 (n8n, puppeteer, filesystem, airtable)"
+                          echo -e "${RED}⚠️ 異常: MCP サーバー数が3と異なります${NC}"
+            echo "   期待値: 3 (n8n, filesystem, airtable)"
             echo "   実際値: $server_count"
         fi
         
@@ -161,7 +161,7 @@ show_common_issues() {
     cat << 'EOF'
 
 ### 📝 1. MCPサーバーが応答しない
-**症状**: MCP関数（airtable、puppeteer等）が使用できない
+**症状**: MCP関数（airtable等）が使用できない
 **解決策**:
 ```bash
 # Cursor再起動

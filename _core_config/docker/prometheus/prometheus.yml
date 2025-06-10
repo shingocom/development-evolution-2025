@@ -1,0 +1,94 @@
+# Prometheus Configuration for AI Development Environment
+# Kong Gateway Integration - 2025年6月10日
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Rule files (アラートルール設定)
+rule_files:
+  - "kong_alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Kong Gateway メトリクス収集
+  - job_name: 'kong-gateway'
+    static_configs:
+      - targets: ['host.docker.internal:8001']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    scheme: 'http'
+    honor_labels: true
+    
+    # Kong固有のメトリクス詳細設定
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: host.docker.internal:8001
+
+  # Kong Proxy メトリクス（プロキシ経由）
+  - job_name: 'kong-proxy'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    scheme: 'http'
+    
+  # AI Services (Kong経由でメトリクス収集)
+  - job_name: 'ai-api-gateway'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+    metrics_path: '/api/v1/gateway/metrics'
+    scrape_interval: 30s
+    scheme: 'http'
+    params:
+      format: ['prometheus']
+    headers:
+      X-API-Key: 'ai-dev-key-2025'
+
+  # Ollama LLM Service
+  - job_name: 'ollama-llm'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+    metrics_path: '/api/v1/llm/api/metrics'
+    scrape_interval: 30s
+    scheme: 'http'
+
+  # PostgreSQL (Kong Database)
+  - job_name: 'postgres-kong'
+    static_configs:
+      - targets: ['ai-postgres:5432']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scheme: 'http'
+
+  # Redis (Kong Cache)
+  - job_name: 'redis-kong'
+    static_configs:
+      - targets: ['ai-redis:6379']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Prometheus 自己監視
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 15s
+
+# Alertmanager設定
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - host.docker.internal:9093
+
+# 外部ラベル（マルチクラスタ対応）
+external_labels:
+  cluster: 'ai-development'
+  environment: 'kong-gateway'
+  project: 'hotfix-2025' 

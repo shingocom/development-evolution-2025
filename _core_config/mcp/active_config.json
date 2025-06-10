@@ -1,24 +1,5 @@
 {
   "mcpServers": {
-    "n8n-workflow-builder": {
-      "command": "npx",
-      "args": ["-y", "@kernel.salacoste/n8n-workflow-builder"],
-      "env": {
-        "N8N_HOST": "http://localhost:5678/api/v1/",
-        "N8N_API_KEY": "${N8N_API_KEY}",
-        "READ_ONLY": "false"
-      }
-    },
-    "puppeteer": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-puppeteer"
-      ],
-      "env": {
-        "PUPPETEER_EXECUTABLE_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-      }
-    },
     "filesystem": {
       "command": "npx",
       "args": [

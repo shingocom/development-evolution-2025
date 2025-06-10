@@ -4,7 +4,7 @@
 
 ### ✅ **既存の強み**
 - **AI/ML環境**: FLUX.1、LLaMA、Stable Diffusion
-- **MCP統合**: Airtable、Puppeteer、Filesystem、N8N
+- **MCP統合**: Airtable、Filesystem、N8N
 - **Python**: 3.13.3 (最新版)
 - **Git**: 2.39.5 (バージョン管理基盤)
 - **SQLite**: ローカルDB基盤

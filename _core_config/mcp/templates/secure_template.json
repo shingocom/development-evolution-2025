@@ -7,10 +7,6 @@
         "N8N_API_KEY": "${N8N_API_KEY}"
       }
     },
-    "puppeteer": {
-      "command": "npx",
-      "args": ["@modelcontextprotocol/server-puppeteer"]
-    },
     "filesystem": {
       "command": "npx",
       "args": [

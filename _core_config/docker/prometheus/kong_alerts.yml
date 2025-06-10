@@ -1,0 +1,130 @@
+# Kong Gateway Prometheus Alert Rules
+# 作成日: 2025年6月10日
+
+groups:
+  - name: kong-gateway
+    rules:
+      # Kong Gateway ヘルス監視
+      - alert: KongGatewayDown
+        expr: up{job="kong-gateway"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: kong-gateway
+        annotations:
+          summary: "Kong Gateway is down"
+          description: "Kong Gateway has been down for more than 1 minute"
+
+      # Kong Database接続
+      - alert: KongDatabaseUnreachable
+        expr: kong_datastore_reachable == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: kong-database
+        annotations:
+          summary: "Kong database unreachable"
+          description: "Kong cannot reach its database for {{ $value }} minutes"
+
+      # レスポンス時間アラート
+      - alert: KongHighResponseTime
+        expr: histogram_quantile(0.95, rate(kong_http_requests_total[5m])) > 0.5
+        for: 3m
+        labels:
+          severity: warning
+          service: kong-gateway
+        annotations:
+          summary: "Kong high response time"
+          description: "Kong 95th percentile response time is {{ $value }}s"
+
+      # エラー率アラート
+      - alert: KongHighErrorRate
+        expr: rate(kong_http_requests_total{code=~"5.."}[5m]) / rate(kong_http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+          service: kong-gateway
+        annotations:
+          summary: "Kong high error rate"
+          description: "Kong error rate is {{ $value | humanizePercentage }}"
+
+      # 接続数アラート
+      - alert: KongHighConnections
+        expr: kong_nginx_connections_total{state="active"} > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: kong-gateway
+        annotations:
+          summary: "Kong high active connections"
+          description: "Kong has {{ $value }} active connections"
+
+      # メモリ使用量アラート
+      - alert: KongHighMemoryUsage
+        expr: kong_memory_lua_shared_dict_bytes / (1024*1024*1024) > 1
+        for: 10m
+        labels:
+          severity: warning
+          service: kong-gateway
+        annotations:
+          summary: "Kong high memory usage"
+          description: "Kong memory usage is {{ $value | humanize }}GB"
+
+  - name: kong-services
+    rules:
+      # API Gateway サービス
+      - alert: ApiGatewayDown
+        expr: up{job="ai-api-gateway"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: api-gateway
+        annotations:
+          summary: "API Gateway service is down"
+          description: "API Gateway service has been unreachable for {{ $value }} minutes"
+
+      # Ollama LLM サービス
+      - alert: OllamaLLMDown
+        expr: up{job="ollama-llm"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: ollama-llm
+        annotations:
+          summary: "Ollama LLM service is down"
+          description: "Ollama LLM service has been unreachable for {{ $value }} minutes"
+
+  - name: kong-security
+    rules:
+      # 認証失敗アラート
+      - alert: KongHighAuthFailure
+        expr: rate(kong_http_requests_total{code="401"}[5m]) > 10
+        for: 3m
+        labels:
+          severity: warning
+          service: kong-security
+        annotations:
+          summary: "Kong high authentication failures"
+          description: "Kong has {{ $value }} authentication failures per second"
+
+      # Rate Limit到達アラート
+      - alert: KongRateLimitHit
+        expr: rate(kong_http_requests_total{code="429"}[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          service: kong-security
+        annotations:
+          summary: "Kong rate limit frequently hit"
+          description: "Kong rate limit hit {{ $value }} times per second"
+
+      # 異常なトラフィックアラート
+      - alert: KongUnusualTraffic
+        expr: rate(kong_http_requests_total[5m]) > 100
+        for: 5m
+        labels:
+          severity: info
+          service: kong-gateway
+        annotations:
+          summary: "Kong unusual high traffic"
+          description: "Kong receiving {{ $value }} requests per second" 

@@ -161,28 +161,72 @@ git push origin main
 echo "- $(date +%H:%M): [ファイル名] 更新完了" >> _ai_workspace/context/current_session.md
 ```
 
+### **🚨 N8N作業時の重要注意事項**
+
+#### **⚠️ CRITICAL: N8Nローカル環境の制限**
+```
+🔴 【データ破壊防止】重要事項:
+
+1. N8Nローカルホスト環境は1アカウントのみサポート
+2. 新規アカウント作成 = 既存データ完全削除
+3. 既存ワークフロー・設定が全て失われる
+4. 復旧不可能なデータ損失のリスク
+
+⚠️ 既存N8N環境での作業手順:
+- ❌ 新規アカウント作成は絶対に禁止
+- ✅ 既存ログイン情報のみ使用
+- ✅ MCP接続は既存APIキーで認証
+- ✅ データベース初期化は厳禁
+```
+
+#### **🔧 N8N-MCP統合の正しい手順**
+```bash
+# 1. 既存N8N環境確認（破壊前チェック）
+curl http://localhost:5678/healthz  # サービス稼働確認
+docker ps | grep n8n               # コンテナ状況確認
+
+# 2. 既存認証情報確認
+# 注意: 新規ログインページが表示されても新規作成しない
+# 既存のユーザー名・パスワードでログイン試行
+
+# 3. APIキー取得（既存アカウントで）
+# N8N画面: Settings > API Keys > Create API Key
+
+# 4. MCP設定更新（データ破壊なし）
+# ~/.cursor/mcp.json の N8N_API_KEY のみ更新
+# 新規インスタンス作成は禁止
+
+# 5. 接続テスト
+# MCPでワークフロー一覧取得テスト
+```
+
 ### **🔄 作業パターン別フロー**
 
-#### **パターンA: 設定ファイル変更**
+#### **パターンA: MCP設定変更（N8N含む）**
 ```bash
-# 例: MCP設定更新
+# 例: MCP設定更新 - データ破壊防止重視
 
-# 1. 現状確認
+# 1. 現状確認（既存環境保護）
 cat ~/.cursor/mcp.json | jq .
+docker ps | grep n8n  # N8N稼働状況
 
 # 2. 環境変数確認
 source ~/.env.secure
 echo "N8N_API_KEY前10文字: ${N8N_API_KEY:0:10}"
 
-# 3. テンプレート適用
+# 3. バックアップ作成
+cp ~/.cursor/mcp.json ~/.cursor/mcp.json.backup_$(date +%Y%m%d_%H%M%S)
+
+# 4. テンプレート適用（慎重に）
 cp _core_config/mcp/templates/secure_template.json ~/.cursor/mcp.json
 
-# 4. 動作確認（MCPツール使用）
+# 5. 動作確認（既存データ確認）
 # 例: Airtableベース一覧取得テスト
+# 例: N8Nワークフロー一覧取得（既存データ保持確認）
 
-# 5. Git記録
+# 6. Git記録
 git add _core_config/mcp/
-git commit -m "🔧 MCP設定更新: $(date +%Y-%m-%d)"
+git commit -m "🔧 MCP設定更新: $(date +%Y-%m-%d) - データ保護確認済み"
 git push origin main
 ```
 
