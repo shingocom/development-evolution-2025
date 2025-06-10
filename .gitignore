@@ -254,3 +254,11 @@ test_*.js
 experiment_*
 temp_*
 debug_* 
+# Development直下のファイル作成防止 (README.md、.gitignore、.directory-rules.json以外)
+/*.md
+/*.json
+/*.sh
+/*.txt
+!README.md
+!.gitignore
+!.directory-rules.json
