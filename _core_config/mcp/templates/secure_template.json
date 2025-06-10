@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+    "n8n-workflow-builder": {
+      "command": "npx",
+      "args": ["@julien-robert-info/n8n-workflow-builder"],
+      "env": {
+        "N8N_API_KEY": "${N8N_API_KEY}"
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-puppeteer"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/shingoyamaguchi02/Downloads",
+        "/Users/shingoyamaguchi02/Development",
+        "/Users/shingoyamaguchi02/Library/Mobile Documents/com~apple~CloudDocs",
+        "/Users/shingoyamaguchi02/flux-lab",
+        "/Users/shingoyamaguchi02/llama-lab",
+        "/Users/shingoyamaguchi02/sd-lab"
+      ]
+    },
+    "airtable": {
+      "command": "npx",
+      "args": ["@felores/airtable-mcp-server"],
+      "env": {
+        "AIRTABLE_API_KEY": "${AIRTABLE_API_KEY}"
+      }
+    }
+  }
+} 
