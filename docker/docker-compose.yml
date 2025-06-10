@@ -1,0 +1,184 @@
+version: '3.8'
+
+services:
+  # ===========================================
+  # AI開発メインコンテナ（Python + PyTorch）
+  # ===========================================
+  ai-dev:
+    build:
+      context: ./ai-dev
+      dockerfile: Dockerfile
+    container_name: ai-dev-main
+    restart: unless-stopped
+    
+    # Mac/Linux クロスプラットフォーム対応ポート
+    ports:
+      - "8888:8888"    # Jupyter Lab
+      - "8000:8000"    # FastAPI/Flask開発サーバー
+      - "6006:6006"    # TensorBoard
+    
+    # Mac/Linux 対応ボリューム設定
+    volumes:
+      # 開発環境共有（${PWD}でクロスプラットフォーム対応）
+      - "${PWD}/../AI Projects:/workspace/projects"
+      - "${PWD}/../_ai_workspace:/workspace/ai_workspace"
+      
+      # Macユーザー向け
+      - "${PWD}:/workspace/development:delegated"
+      
+      # モデル・データ永続化
+      - ai-models:/workspace/models
+      - ai-datasets:/workspace/datasets
+      
+      # Jupyter設定永続化
+      - jupyter-config:/root/.jupyter
+    
+    # 環境変数（.envファイル対応）
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=ai-development-2025
+      - PYTHONPATH=/workspace
+      - CUDA_VISIBLE_DEVICES=all
+      
+      # Mac/Linux判定用
+      - HOST_OS=${HOST_OS:-mac}
+      - HOST_ARCH=${HOST_ARCH:-arm64}
+    
+    # GPU対応（NVIDIA GPUがある場合）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+    # ネットワーク設定
+    networks:
+      - ai-network
+
+  # ===========================================
+  # Flux.1 画像生成サービス
+  # ===========================================
+  flux-service:
+    build:
+      context: ./ai-ml
+      dockerfile: Dockerfile.flux
+    container_name: flux-generator
+    restart: unless-stopped
+    
+    ports:
+      - "7860:7860"    # Gradio UI
+      - "5000:5000"    # API エンドポイント
+    
+    volumes:
+      - "${PWD}/../AI Projects/Short Generation/Image:/workspace/output"
+      - flux-models:/workspace/models
+      - "${PWD}:/workspace/config"
+    
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+      - MODEL_CACHE_DIR=/workspace/models
+    
+    depends_on:
+      - ai-dev
+    
+    networks:
+      - ai-network
+
+  # ===========================================
+  # Ollama LLMサービス
+  # ===========================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-llm
+    restart: unless-stopped
+    
+    ports:
+      - "11434:11434"   # Ollama API
+    
+    volumes:
+      - ollama-data:/root/.ollama
+      - "${PWD}:/workspace/config"
+    
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    
+    networks:
+      - ai-network
+
+  # ===========================================
+  # N8N ワークフロー統合（既存との連携）
+  # ===========================================
+  n8n-integration:
+    image: n8nio/n8n:latest
+    container_name: n8n-docker-integration
+    restart: unless-stopped
+    
+    ports:
+      - "5679:5678"     # 既存N8Nと重複回避
+    
+    volumes:
+      - n8n-data:/home/node/.n8n
+      - "${PWD}:/workspace/development"
+    
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=ai-development-2025
+      - DB_TYPE=sqlite
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - WEBHOOK_URL=http://localhost:5679
+    
+    networks:
+      - ai-network
+
+  # ===========================================
+  # Redis（キャッシュ・セッション管理）
+  # ===========================================
+  redis:
+    image: redis:7-alpine
+    container_name: ai-redis
+    restart: unless-stopped
+    
+    ports:
+      - "6379:6379"
+    
+    volumes:
+      - redis-data:/data
+    
+    command: redis-server --appendonly yes
+    
+    networks:
+      - ai-network
+
+# ===========================================
+# ボリューム定義（データ永続化）
+# ===========================================
+volumes:
+  ai-models:
+    driver: local
+  ai-datasets:
+    driver: local
+  jupyter-config:
+    driver: local
+  flux-models:
+    driver: local
+  ollama-data:
+    driver: local
+  n8n-data:
+    driver: local
+  redis-data:
+    driver: local
+
+# ===========================================
+# ネットワーク設定
+# ===========================================
+networks:
+  ai-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16 
