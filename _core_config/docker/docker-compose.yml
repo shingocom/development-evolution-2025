@@ -78,57 +78,7 @@ services:
     restart: unless-stopped
 
   # ==========================================
-  # Kong Gateway (API統合管理)
-  # ==========================================
-  kong-database-migration:
-    image: kong/kong:latest
-    container_name: kong-migration
-    environment:
-      - KONG_DATABASE=postgres
-      - KONG_PG_HOST=postgres
-      - KONG_PG_PORT=5432
-      - KONG_PG_DATABASE=ai_development
-      - KONG_PG_USER=ai_user
-      - KONG_PG_PASSWORD=ai-development-2025
-    command: kong migrations bootstrap
-    depends_on:
-      - postgres
-    restart: "no"
-
-  kong:
-    image: kong/kong:latest
-    container_name: ai-kong
-    ports:
-      - "8080:8000"    # Kong Proxy
-      - "8001:8001"    # Kong Admin API
-      - "8444:8443"    # Kong Proxy SSL
-      - "8002:8002"    # Kong Manager
-    environment:
-      - KONG_DATABASE=postgres
-      - KONG_PG_HOST=postgres
-      - KONG_PG_PORT=5432
-      - KONG_PG_DATABASE=ai_development
-      - KONG_PG_USER=ai_user
-      - KONG_PG_PASSWORD=ai-development-2025
-      - KONG_PROXY_ACCESS_LOG=/dev/stdout
-      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
-      - KONG_PROXY_ERROR_LOG=/dev/stderr
-      - KONG_ADMIN_ERROR_LOG=/dev/stderr
-      - KONG_ADMIN_LISTEN=0.0.0.0:8001
-      - KONG_ADMIN_GUI_URL=http://localhost:8002
-      - KONG_PLUGINS=bundled,prometheus
-    depends_on:
-      - postgres
-      - kong-database-migration
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "kong", "health"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-
-  # ==========================================
-  # API Gateway (existing - Kong経由でアクセス)
+  # API Gateway
   # ==========================================
   api-gateway:
     build:
@@ -136,7 +86,7 @@ services:
       dockerfile: Dockerfile
     container_name: ai-api-gateway
     ports:
-      - "8000:8000"    # 直接アクセス（段階的移行用）
+      - "8000:8000"
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://ai_user:ai-development-2025@postgres:5432/ai_development
