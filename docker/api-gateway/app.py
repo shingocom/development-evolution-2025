@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 AI Development API Gateway
-Kong統合用のシンプルなAPI Gatewayサービス
+シンプルなAPI Gatewayサービス
 """
 
 import os
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # FastAPIアプリケーション初期化
 app = FastAPI(
     title="AI Development API Gateway",
-    description="Kong統合API Gateway for AI Development Platform",
+    description="API Gateway for AI Development Platform",
     version="1.0.0"
 )
 
@@ -78,8 +78,7 @@ async def root():
         "service": "AI Development API Gateway",
         "version": "1.0.0",
         "status": "running",
-        "timestamp": datetime.now().isoformat(),
-        "kong_integration": "ready"
+        "timestamp": datetime.now().isoformat()
     }
 
 @app.get("/health")
@@ -130,7 +129,6 @@ async def api_status():
                 "last_health_check": datetime.now().isoformat()
             },
             "integrations": {
-                "kong_gateway": "active",
                 "redis_cache": "connected",
                 "postgresql_db": "connected",
                 "ollama_llm": "available"
@@ -152,7 +150,7 @@ async def api_status():
 
 @app.get("/api/metrics")
 async def get_metrics():
-    """メトリクス情報（Kong Prometheus統合用）"""
+    """メトリクス情報（Prometheus統合用）"""
     metrics = {
         "timestamp": datetime.now().isoformat(),
         "api_gateway_requests_total": "counter",
@@ -213,7 +211,6 @@ async def gateway_info():
             "ollama_url": OLLAMA_URL
         },
         "features": [
-            "Kong Integration",
             "Redis Caching", 
             "PostgreSQL Database",
             "Health Monitoring",
