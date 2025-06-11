@@ -76,5 +76,5 @@ alerting:
 # 外部ラベル（マルチクラスタ対応）
 external_labels:
   cluster: 'ai-development'
-  environment: 'kong-gateway'
-  project: 'hotfix-2025' 
+  environment: 'development'
+  project: 'ai-platform-2025' 
