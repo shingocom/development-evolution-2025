@@ -68,14 +68,14 @@ services:
     image: n8nio/n8n:latest
     container_name: ai-n8n
     ports:
-      - "5678:5678"
+      - "5679:5678"
     volumes:
       - n8n_data:/home/node/.n8n
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=ai-development-2025
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_ENCRYPTION_KEY=N0XlER1mhXxlVrLK6Bx8uBkXBK0IYVQE
     restart: unless-stopped
+    user: "1000:1000"
 
   # ==========================================
   # API Gateway
