@@ -179,6 +179,26 @@ echo "- $(date +%H:%M): [ファイル名] 更新完了" >> _ai_workspace/context
 - ✅ データベース初期化は厳禁
 ```
 
+#### **🚨 CRITICAL: Docker N8N ボリューム管理**
+```
+🔴 【ボリューム消失防止】重要事項:
+
+1. Docker Composeプロジェクト名でボリューム名が決定される
+2. 実行ディレクトリ変更 = 異なるボリューム作成
+3. `docker rm -f` でコンテナ削除時もボリューム残存
+4. しかし異なるプロジェクト名では別ボリューム参照
+
+⚠️ Docker N8N作業時の必須手順:
+- ✅ 必ず同じディレクトリから docker-compose 実行
+- ✅ プロジェクト名固定: `cd _core_config/docker && docker-compose`
+- ❌ ルートディレクトリからの実行禁止
+- ✅ ボリューム確認: `docker volume ls | grep n8n`
+- ✅ データ復旧手順: 正しいボリューム間でデータコピー
+
+🔧 緊急復旧コマンド:
+docker run --rm -v ai-development-2025_n8n_data:/source -v docker_n8n_data:/target alpine sh -c "cp -a /source/. /target/"
+```
+
 #### **🔧 N8N-MCP統合の正しい手順**
 ```bash
 # 1. 既存N8N環境確認（破壊前チェック）
