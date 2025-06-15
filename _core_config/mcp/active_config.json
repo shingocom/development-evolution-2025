@@ -4,7 +4,7 @@
       "command": "npx",
       "args": ["-y", "@kernel.salacoste/n8n-workflow-builder"],
       "env": {
-        "N8N_HOST": "http://localhost:5679/api/v1/",
+        "N8N_HOST": "http://localhost:5678/api/v1/",
         "N8N_API_KEY": "${N8N_API_KEY}",
         "API_KEY_HEADER": "X-API-Key",
         "READ_ONLY": "false"
